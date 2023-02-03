@@ -1,0 +1,139 @@
+server:
+  port: 9000
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Route For User Services
+        - id: UserService
+          uri: lb://UserService
+          predicates:
+            - Path=/public/**,/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: UserService
+                fallbackuri: forward:/userfallback
+
+        # Route For Product Service
+        - id: ProductService
+          uri: lb://ProductService
+          predicates:
+            - Path=/product/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: ProductService
+                fallbackuri: forward:/productfallback
+
+        # Route For Order Service
+        - id: CartService
+          uri: lb://CartService
+          predicates:
+            - Path=/cart/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: CartService
+                fallbackuri: forward:/cartfallback
+
+        - id: OrderService
+          uri: lb://OrderService
+          predicates:
+            - Path=/order/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: OrderService
+                fallbackuri: forward:/orderfallback
+
+        - id: WishListService
+          uri: lb://WishListService
+          predicates:
+            - Path=/wishlist/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: WishListService
+                fallbackuri: forward:/wishlistfallback
+
+  # Spring Boot Admin Client
+  boot:
+    admin:
+      client:
+        url:
+          - http://localhost:8761/admin
+
+# Hystrix
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+# Spring Boot Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  # CircuitBreaker Module Configuration
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 4
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 5
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+    instances:
+      CartService:
+        baseConfig: default
+      UserService:
+        baseConfig: default
+      ProductService:
+        baseConfig: default
+      OrderService:
+        baseConfig: default
+
+  # Retry Module
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 3s
+    instances:
+      CartService:
+        baseConfig: default
+      UserService:
+        baseConfig: default
+      ProductService:
+        baseConfig: default
+      OrderService:
+        baseConfig: default
+
+# Eureka Server Configuration
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-register: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost

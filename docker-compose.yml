@@ -1,0 +1,170 @@
+version: "2"
+
+services:
+
+  # MySQL
+  database:
+    container_name: mysql
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    #    volumes:
+    #      - ./data:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      - backend
+
+  # SpringBoot
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
+    depends_on:
+      - cart-service
+    environment:
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.url=jdbc:mysql://database/dockertest?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.jpa.generate-ddl=true
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.hibernate.ddl=true
+      - spring.jpa.show-sql=true
+    ports:
+      - 9090:8080
+    networks:
+      - backend
+      - frontend
+
+  # SpringBoot
+  cart-service:
+    container_name: cart-service
+    build:
+      context: ./CartService
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    environment:
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.url=jdbc:mysql://database/dockertest?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.jpa.generate-ddl=true
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.hibernate.ddl=true
+      - spring.jpa.show-sql=true
+    ports:
+      - 9090:8080
+    networks:
+      - backend
+      - frontend
+
+  # SpringBoot
+  product-service:
+    container_name: product-service
+    build:
+      context: ./ProductService
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    environment:
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.url=jdbc:mysql://database/dockertest?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.jpa.generate-ddl=true
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.hibernate.ddl=true
+      - spring.jpa.show-sql=true
+    ports:
+      - 9090:8080
+    networks:
+      - backend
+      - frontend
+
+  # SpringBoot
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./ServiceRegistry
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    environment:
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.url=jdbc:mysql://database/dockertest?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.jpa.generate-ddl=true
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.hibernate.ddl=true
+      - spring.jpa.show-sql=true
+    ports:
+      - 9090:8080
+    networks:
+      - backend
+      - frontend
+
+  hystrix-dashboard:
+    container_name:  hystrix-dashboard
+    build:
+      context: ./HystrixDashboard
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    environment:
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.url=jdbc:mysql://database/dockertest?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.jpa.generate-ddl=true
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.hibernate.ddl=true
+      - spring.jpa.show-sql=true
+    ports:
+      - 9090:8080
+    networks:
+      - backend
+      - frontend
+  
+  user-service:
+    container_name: user-service
+    build:
+      context: ./UserService
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+    environment:
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.url=jdbc:mysql://database/dockertest?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+      - spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+      - spring.jpa.generate-ddl=true
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.jpa.hibernate.ddl=true
+      - spring.jpa.show-sql=true
+    ports:
+      - 9090:8080
+    networks:
+      - backend
+      - frontend
+
+
+  # React JS
+  client:
+    container_name: react
+    build:
+      context: ./reactdocker
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - server
+    ports:
+      - 4000:3000
+    networks:
+      - frontend
+
+networks:
+  backend:
+  frontend:

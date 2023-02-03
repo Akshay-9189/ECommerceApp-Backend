@@ -1,0 +1,19 @@
+server:
+  port: 8761
+
+spring:
+  cloud:
+    config:
+      import-check:
+        enabled: false
+
+  boot:
+    admin:
+      context-path: /admin
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

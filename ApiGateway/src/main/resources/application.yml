@@ -1,0 +1,14 @@
+spring:
+
+  # Application Name
+  application:
+    name: APIGateway
+
+  # Currently Activated Profile
+  profiles:
+    active: dev
+
+  # Devtools Auto Reload
+  devtools:
+    restart:
+      enabled: true

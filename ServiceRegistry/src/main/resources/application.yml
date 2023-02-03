@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Service Registry
+
+  # Currently Activated Profile
+  profiles:
+    active: dev
+
+  # Devtools Auto Reload
+  devtools:
+    restart:
+      enabled: true

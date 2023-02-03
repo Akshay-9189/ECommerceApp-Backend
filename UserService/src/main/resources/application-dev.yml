@@ -1,0 +1,40 @@
+server:
+  port: 9001
+
+spring:
+
+  # MongoDB Config
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: UserService
+      # uri: mongodb://host:port/UserService
+
+  # Zipkin Server Configuration
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+
+  # Spring Boot Admin Client
+  boot:
+    admin:
+      client:
+        url:
+          - http://localhost:8761/admin
+
+# Spring Boot Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# Eureka Server Configuration
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-register: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
