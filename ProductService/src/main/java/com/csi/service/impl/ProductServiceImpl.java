@@ -88,15 +88,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public String uploadFile(MultipartFile multipartFile) throws IOException {
 
-        String uploadLocation = new ClassPathResource("static/images/").getFile().getAbsolutePath();
+        // Copy To "./src/main/resources/static/images/"
         String localLocation = String.valueOf(Paths.get("./src/main/resources/static/images/").toAbsolutePath().normalize());
-
-        // Copy To Target Folder
-        Files.copy(multipartFile.getInputStream(), Paths.get(uploadLocation + File.separator + multipartFile
+        Files.copy(multipartFile.getInputStream(), Paths.get(localLocation + File.separator + multipartFile
                 .getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
 
-        // Copy To "./src/main/resources/static/images/"
-        Files.copy(multipartFile.getInputStream(), Paths.get(localLocation + File.separator + multipartFile
+        // Copy To Target Folder
+        String uploadLocation = new ClassPathResource("static/images/").getFile().getAbsolutePath();
+        Files.copy(multipartFile.getInputStream(), Paths.get(uploadLocation + File.separator + multipartFile
                 .getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
 
         return ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(Objects.requireNonNull(
