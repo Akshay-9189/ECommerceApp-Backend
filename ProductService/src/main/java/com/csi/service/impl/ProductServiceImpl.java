@@ -4,6 +4,7 @@ import com.csi.dao.ProductDao;
 import com.csi.dao.SubCategoryDao;
 import com.csi.dto.product.SaveProductDTO;
 import com.csi.exception.ProductOutOfStock;
+import com.csi.external.OrderService;
 import com.csi.model.Product;
 import com.csi.model.SubCategory;
 import com.csi.service.ProductService;
@@ -30,6 +31,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private SubCategoryDao subCategoryDao;
+
+    @Autowired
+    private OrderService orderService;
 
     @Override
     public List<Product> getAllProduct() {
@@ -78,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productDao.getProduct(productId);
         product.setSubCategory(null);
         productDao.deleteProduct(productId);
+        orderService.deleteOrderByProductId(product.getProductId());
     }
 
     @Override
@@ -160,5 +165,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> sortProductByPriceDescending() {
         return getAllProduct().stream().sorted(Comparator.comparingInt(Product::getProductPrice).reversed()).toList();
+    }
+
+    @Override
+    public List<Product> filterProductByName(String productName) {
+        return getAllProduct().stream().filter(prod -> prod.getProductName().equals(productName)).toList();
     }
 }

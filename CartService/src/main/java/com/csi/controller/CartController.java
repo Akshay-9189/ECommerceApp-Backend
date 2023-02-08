@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class CartController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class CartController {
     @PostMapping("/create-shopping-cart/{userId}")
     public ResponseEntity<?> createCart(@PathVariable String userId) {
         if (!shoppingCartService.checkUserHaveShoppingCart(userId)) {
-            return new ResponseEntity<>(shoppingCartService.createShoppingCart(userId), HttpStatus.CREATED);
+            return new ResponseEntity<>(shoppingCartService.createShoppingCart(userId), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(shoppingCartService.getUser(userId), HttpStatus.OK);
         }
@@ -27,7 +27,7 @@ public class CartController {
 
     @PostMapping("/add-product-to-cart/{shoppingCartId}/{productId}")
     public ResponseEntity<?> addProductToCart(@PathVariable String shoppingCartId, @PathVariable String productId) {
-        return new ResponseEntity<>(shoppingCartService.addProductToCart(shoppingCartId, productId), HttpStatus.CREATED);
+        return new ResponseEntity<>(shoppingCartService.addProductToCart(shoppingCartId, productId), HttpStatus.OK);
     }
 
     @PostMapping("/increase-product-quantity-in-cart/{shoppingCartId}/{productId}")
@@ -52,7 +52,7 @@ public class CartController {
 
     @PostMapping("/add-coupon/{shoppingCartId}/{couponName}")
     public ResponseEntity<?> addCoupon(@PathVariable String shoppingCartId, @PathVariable String couponName) {
-        return new ResponseEntity<>(shoppingCartService.addCouponToCart(shoppingCartId, couponName), HttpStatus.CREATED);
+        return new ResponseEntity<>(shoppingCartService.addCouponToCart(shoppingCartId, couponName), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete-coupon/{shoppingCartId}")

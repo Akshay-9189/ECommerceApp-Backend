@@ -1,2 +1,4 @@
 zipkin-server-2.23.19-exec.jar
 .idea
+docker-compose.yml
+.gitignore

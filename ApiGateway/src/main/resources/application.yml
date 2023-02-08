@@ -12,3 +12,6 @@ spring:
   devtools:
     restart:
       enabled: true
+
+  main:
+    allow-circular-references: true

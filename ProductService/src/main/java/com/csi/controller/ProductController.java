@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/product")
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 @Slf4j
 public class ProductController {
 
@@ -45,7 +45,7 @@ public class ProductController {
         if (multipartFile.isEmpty() || !multipartFile.getContentType().equals("image/jpeg")) {
             throw new FileFormatNotMatch("The Image Content Type Must Be .jpeg ");
         } else {
-            return new ResponseEntity<>(productService.saveProduct(product, multipartFile), HttpStatus.CREATED);
+            return new ResponseEntity<>(productService.saveProduct(product, multipartFile), HttpStatus.OK);
         }
     }
 
@@ -62,7 +62,7 @@ public class ProductController {
     @DeleteMapping("/delete/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable String productId) {
         productService.deleteProduct(productId);
-        return new ResponseEntity<>("Product" + "/t" + productId + "/t" + "Deleted Successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Product" + productId + "Deleted Successfully", HttpStatus.OK);
     }
 
     @PatchMapping("/decrease-product-quantity/{productId}/{productSelectedQuantity}")
@@ -72,7 +72,7 @@ public class ProductController {
 
     @PatchMapping("/increase-product-quantity/{productId}/{productQuantity}")
     public ResponseEntity<?> increaseQuantity(@PathVariable String productId, @PathVariable int productQuantity) {
-        return new ResponseEntity<>(productService.increaseProductQuantity(productId, productQuantity), HttpStatus.OK);
+        return new ResponseEntity<>(productService.increaseProductQuantity(productId, productQuantity), HttpStatus.PARTIAL_CONTENT);
     }
 
     @GetMapping("/get-by-name/{productName}")
@@ -111,12 +111,17 @@ public class ProductController {
     }
 
     @GetMapping("/sort-by-price-ascending")
-    public  ResponseEntity<?> sortByproductPriceAscending(){
-        return  new ResponseEntity<>(productService.sortProductByPriceAscending() , HttpStatus.OK);
+    public ResponseEntity<?> sortByproductPriceAscending() {
+        return new ResponseEntity<>(productService.sortProductByPriceAscending(), HttpStatus.OK);
     }
 
     @GetMapping("/sort-by-price-descending")
-    public  ResponseEntity<?> sortByProductPriceDescending(){
-        return  new ResponseEntity<>(productService.sortProductByPriceDescending() , HttpStatus.OK);
+    public ResponseEntity<?> sortByProductPriceDescending() {
+        return new ResponseEntity<>(productService.sortProductByPriceDescending(), HttpStatus.OK);
+    }
+
+    @GetMapping("/filter-product-by-name/{productName}")
+    public ResponseEntity<?> filterProductByName(@PathVariable String productName) {
+        return new ResponseEntity<>(productService.filterProductByName(productName), HttpStatus.OK);
     }
 }

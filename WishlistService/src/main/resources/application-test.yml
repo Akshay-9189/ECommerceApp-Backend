@@ -1,12 +1,12 @@
 # Application's Port
 server:
-  port: 9004
+  port: 9005
 
 spring:
   # Database Configuration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/OrderService?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+    url: jdbc:mysql://localhost:3306/WishlistService?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
     username: root
     password: root
 
@@ -14,7 +14,7 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
     generate-ddl: true
     hibernate:
       ddl-auto: update

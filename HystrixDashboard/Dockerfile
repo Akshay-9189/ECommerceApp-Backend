@@ -6,4 +6,4 @@ ADD target/Hystrix-Dashboard-0.0.1-SNAPSHOT.jar Hystrix-Dashboard-0.0.1-SNAPSHOT
 
 ENTRYPOINT ["java" , "-jar" , "Hystrix-Dashboard-0.0.1-SNAPSHOT.jar"]
 
-EXPOSE 9000
+EXPOSE 9009

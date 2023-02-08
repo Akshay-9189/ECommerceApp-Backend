@@ -5,7 +5,7 @@ spring:
 
   # Currently Activated Profile
   profiles:
-    active: dev
+    active: test
 
   # Devtools Auto Reload
   devtools:

@@ -1,6 +1,5 @@
 package com.csi.controller;
 
-import com.csi.exception.CouponNotFoundException;
 import com.csi.model.Coupon;
 import com.csi.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/coupon")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class CouponController {
 
     @Autowired
@@ -18,7 +17,7 @@ public class CouponController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createCoupon(@RequestBody Coupon coupon) {
-        return new ResponseEntity<>(couponService.createCoupon(coupon), HttpStatus.CREATED);
+        return new ResponseEntity<>(couponService.createCoupon(coupon), HttpStatus.OK);
     }
 
     @GetMapping("/get/{couponId}")

@@ -44,4 +44,6 @@ public interface ProductService {
     List<Product> sortProductByPriceAscending();
 
     List<Product> sortProductByPriceDescending();
+
+    List<Product> filterProductByName(String productName);
 }

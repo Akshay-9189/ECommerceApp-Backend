@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/order")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class OrderController {
 
     @Autowired
@@ -56,8 +56,8 @@ public class OrderController {
     }
 
     @DeleteMapping("/delete-order-by-productId/{productId}")
-    public ResponseEntity<?> deleteOrderByProductId(@PathVariable String productId){
+    public ResponseEntity<?> deleteOrderByProductId(@PathVariable String productId) {
         orderService.deleteOrderByProductId(productId);
-        return new ResponseEntity<>("Order Deleted Successfully" , HttpStatus.OK);
+        return new ResponseEntity<>("Order Deleted Successfully", HttpStatus.OK);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/category")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 
 public class CategoryController {
 
@@ -18,7 +18,7 @@ public class CategoryController {
 
     @PostMapping("/save")
     public ResponseEntity<?> saveCategory(@RequestBody Category category) {
-        return new ResponseEntity<>(categoryService.saveCategory(category), HttpStatus.CREATED);
+        return new ResponseEntity<>(categoryService.saveCategory(category), HttpStatus.OK);
     }
 
     @PutMapping("/update/{categoryId}")

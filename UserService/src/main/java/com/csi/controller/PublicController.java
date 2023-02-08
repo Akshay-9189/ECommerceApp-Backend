@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/public")
-@CrossOrigin(value = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 @Slf4j
 public class PublicController {
 

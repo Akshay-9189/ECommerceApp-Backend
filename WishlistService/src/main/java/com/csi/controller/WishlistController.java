@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/wishlist")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class WishlistController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class WishlistController {
     }
 
     @DeleteMapping("/remove-all/{wishListId}/{productIds}")
-    public ResponseEntity<?> removeAllProductFromWishList(@PathVariable String wishListId , @PathVariable List<String> productIds) {
-        return new ResponseEntity<>(wishlistService.removeAllProductFromWishlist(wishListId , productIds), HttpStatus.OK);
+    public ResponseEntity<?> removeAllProductFromWishList(@PathVariable String wishListId, @PathVariable List<String> productIds) {
+        return new ResponseEntity<>(wishlistService.removeAllProductFromWishlist(wishListId, productIds), HttpStatus.OK);
     }
 }

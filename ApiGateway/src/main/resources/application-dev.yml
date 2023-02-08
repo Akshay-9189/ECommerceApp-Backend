@@ -3,7 +3,29 @@ server:
 
 spring:
   cloud:
+    #    discovery:
+    #      enabled: true
     gateway:
+      #      discovery:
+      #        locator:
+      #          enabled: true
+      # default-filters:
+      #  - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
+      #  - AddResponseHeader=Access-Control-Allow-Origin, http://localhost:8000
+      #      globalcors:
+      #        cors-configurations:
+      #          '[/**]':
+      #            allowedOrigins:
+      #              - "http://localhost:8000"
+      #            allowedMethods:
+      #              - GET
+      #              - POST
+      #              - DELETE
+      #              - PUT
+      #              - PATCH
+      #            allowCredentials: true
+      #            allowedHeaders: "*"
+
       routes:
         # Route For User Services
         - id: UserService
@@ -11,6 +33,7 @@ spring:
           predicates:
             - Path=/public/**,/user/**
           filters:
+            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: UserService
@@ -20,50 +43,49 @@ spring:
         - id: ProductService
           uri: lb://ProductService
           predicates:
-            - Path=/product/**
+            - Path=/product/**,/category/**,/sub-category/**
           filters:
+            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: ProductService
                 fallbackuri: forward:/productfallback
 
-        # Route For Order Service
+        # Route For Cart Service
         - id: CartService
           uri: lb://CartService
           predicates:
-            - Path=/cart/**
+            - Path=/cart/**,/cartItems/**,/coupon/**
           filters:
+            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: CartService
                 fallbackuri: forward:/cartfallback
 
+        # Route For Order Service
         - id: OrderService
           uri: lb://OrderService
           predicates:
             - Path=/order/**
           filters:
+            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: OrderService
                 fallbackuri: forward:/orderfallback
 
+        # Route For Wishlist Service
         - id: WishListService
           uri: lb://WishListService
           predicates:
             - Path=/wishlist/**
           filters:
+            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: WishListService
                 fallbackuri: forward:/wishlistfallback
-
-  # Spring Boot Admin Client
-  boot:
-    admin:
-      client:
-        url:
-          - http://localhost:8761/admin
 
 # Hystrix
 hystrix:
@@ -88,52 +110,13 @@ management:
     health:
       show-details: always
 
-resilience4j:
-  # CircuitBreaker Module Configuration
-  circuitbreaker:
-    configs:
-      default:
-        registerHealthIndicator: true
-        eventConsumerBufferSize: 10
-        failureRateThreshold: 50
-        minimumNumberOfCalls: 4
-        automaticTransitionFromOpenToHalfOpenEnabled: true
-        waitDurationInOpenState: 6s
-        permittedNumberOfCallsInHalfOpenState: 5
-        slidingWindowSize: 10
-        slidingWindowType: COUNT_BASED
-    instances:
-      CartService:
-        baseConfig: default
-      UserService:
-        baseConfig: default
-      ProductService:
-        baseConfig: default
-      OrderService:
-        baseConfig: default
-
-  # Retry Module
-  retry:
-    configs:
-      default:
-        maxAttempts: 3
-        waitDuration: 3s
-    instances:
-      CartService:
-        baseConfig: default
-      UserService:
-        baseConfig: default
-      ProductService:
-        baseConfig: default
-      OrderService:
-        baseConfig: default
-
 # Eureka Server Configuration
 eureka:
   client:
-    register-with-eureka: true
     fetch-register: true
+    register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
+    prefer-ip-address: true

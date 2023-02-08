@@ -1,12 +1,12 @@
 # Application's Port
 server:
-  port: 9004
+  port: 9003
 
 spring:
   # Database Configuration
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/OrderService?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
+    url: jdbc:mysql://localhost:3306/CartService?createDatabaseIfNotExist=true&autoReconnect=true&showSSL=false
     username: root
     password: root
 
@@ -14,12 +14,16 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
     generate-ddl: true
     hibernate:
       ddl-auto: update
       ddl: true
     show-sql: true
+
+  # Zipkin Server Configuration
+  zipkin:
+    base-url: http://127.0.0.1:9411/
 
   # Spring Boot Admin Client
   boot:
@@ -28,11 +32,7 @@ spring:
         url:
           - http://localhost:8761/admin
 
-  # Zipkin Server Configuration
-  zipkin:
-    base-url: http://127.0.0.1:9411/
-
-# Spring Boot Actuator Exposing All End Points
+# Spring Boot Actuator
 management:
   endpoints:
     web:

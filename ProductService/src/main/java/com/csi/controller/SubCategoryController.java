@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sub-category")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 
 public class SubCategoryController {
 
@@ -21,7 +21,7 @@ public class SubCategoryController {
 
     @PostMapping("/save")
     public ResponseEntity<?> saveSubCategory(@RequestBody SaveSubCategoryDTO saveSubCategory) {
-        return new ResponseEntity<>(subCategoryService.saveSubCategory(saveSubCategory), HttpStatus.CREATED);
+        return new ResponseEntity<>(subCategoryService.saveSubCategory(saveSubCategory), HttpStatus.OK);
     }
 
     @PutMapping("/update/{subCategoryId}")
@@ -46,8 +46,8 @@ public class SubCategoryController {
     }
 
     @GetMapping("/get-all-subcategories")
-    public ResponseEntity<?> getAllSubCategories(){
-        return  new ResponseEntity<>(subCategoryService.getAllSubCategories()  , HttpStatus.OK);
+    public ResponseEntity<?> getAllSubCategories() {
+        return new ResponseEntity<>(subCategoryService.getAllSubCategories(), HttpStatus.OK);
 
     }
 }

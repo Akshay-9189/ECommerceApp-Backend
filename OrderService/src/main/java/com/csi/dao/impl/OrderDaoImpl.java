@@ -39,6 +39,9 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void deleteOrderByProductId(String productId) {
-        orderRepo.findByProductId(productId).forEach(or -> orderRepo.delete(or));
+        List<OrderDetails> orderDetailsList = orderRepo.findByProductId(productId);
+        if (orderDetailsList != null || !orderDetailsList.isEmpty()) {
+            orderDetailsList.forEach(or -> orderRepo.delete(or));
+        }
     }
 }
