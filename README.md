@@ -43,9 +43,13 @@
 
 1. Service Registry `Port - 8761` :- [Eureka Server](http://localhost:8761/)
 2. API Gateway `Port - 9000` :- 
+
    **Note: For Gateway API Documentation Please Use Postman**
-3. User Service `Port - 9001` :- 
+
+3. User Service `Port - 9001` :-
+
    **Note: For User Service API Documentation Please Use Postman**
+
 4. Product Service `Port - 9002` :- [API Documentation For Product Service](http://localhost:9002/swagger-ui/index.html)
 5. Cart Service `Port - 9003` :- [API Documentation For Cart Service](http://localhost:9003/swagger-ui/index.html)
 6. Order Service `Port - 9004` :- [API Documentation For Order Service](http://localhost:9004/swagger-ui/index.html)
