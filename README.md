@@ -4,9 +4,9 @@
 ## Software Required
 
 1. Java 17
-2. IntelliJ Idea
-3. MySQL 8 & SQLYog
-4. MongoDB 6 & MongoDB Compass
+2. MySQL 8 & SQLYog
+3. MongoDB 6 & MongoDB Compass
+4. IntelliJ Idea
 5. ZipKin Server
 
 
@@ -28,9 +28,10 @@
 
 5. For `ProductService` please open this project in `new window`
 
-   **Note: If you open in same window for save & update product functionality it give `404 exception (File Not Found)`**
+   **Note: If you open in same window for save & update product functionality it give `404 exception - File Not Found`**
 
-   In `ProductService` create `new Directory/Folder static` in src/main/resources then create `new Directory/Folder images` in src/main/resources/static
+   In `ProductService` create new Directory/Folder => `static` in src/main/resources then
+   again create new Directory/Folder => `images` in src/main/resources/static
 
    **Note: For the first time add any image in `ProductService/src/main/resources/static/images`**
 
@@ -41,8 +42,10 @@
 ## Important URI'S 
 
 1. Service Registry `Port - 8761` :- [Eureka Server](http://localhost:8761/)
-2. API Gateway `Port - 9000` :- **Note: For Gateway API Documentation Please Use Postman**
-3. User Service `Port - 9001` :- **Note: For User Service API Documentation Please Use Postman**
+2. API Gateway `Port - 9000` :- 
+   **Note: For Gateway API Documentation Please Use Postman**
+3. User Service `Port - 9001` :- 
+   **Note: For User Service API Documentation Please Use Postman**
 4. Product Service `Port - 9002` :- [API Documentation For Product Service](http://localhost:9002/swagger-ui/index.html)
 5. Cart Service `Port - 9003` :- [API Documentation For Cart Service](http://localhost:9003/swagger-ui/index.html)
 6. Order Service `Port - 9004` :- [API Documentation For Order Service](http://localhost:9004/swagger-ui/index.html)
