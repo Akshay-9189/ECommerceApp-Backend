@@ -1,21 +1,26 @@
 package com.csi.controller;
 
-import com.csi.enums.Roles;
 import com.csi.model.UserInfo;
 import com.csi.service.UserService;
+import com.csi.service.impl.CustomUserDetailService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
 @CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
+@SecurityRequirement(name = "Bearer Authentication")
 public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
     // @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
@@ -39,6 +44,11 @@ public class UserController {
         return new ResponseEntity<>("User Deleted Successfully ", HttpStatus.OK);
     }
 
+    @GetMapping("/user-details/{userEmail}")
+    public ResponseEntity<UserDetails> getUserDetails(@PathVariable String userEmail) {
+        return new ResponseEntity<>(customUserDetailService.loadUserByUsername(userEmail), HttpStatus.OK);
+    }
+
 /*    @PatchMapping("/change-role/{userId}")
     public ResponseEntity<?> updateRole(@PathVariable String userId) {
         UserInfo info = userService.getUser(userId);
@@ -52,4 +62,3 @@ public class UserController {
         return new ResponseEntity<>(info, HttpStatus.OK);
     }*/
 }
-

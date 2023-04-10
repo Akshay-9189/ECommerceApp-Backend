@@ -43,10 +43,6 @@ public class SecurityConfig {
         return provider;
     }
 
-    /*private static final String[] SWAGGER_URL = {
-             "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "/webjars/**"
-     };*/
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf()
@@ -54,10 +50,10 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/public/**", "/user/get/**", "/actuator/**")
+                .antMatchers("/v3/api-docs/**", "/swagger-ui/**")
                 .permitAll()
-                /*.antMatchers(SWAGGER_URL)
-                .permitAll()*/
+                .antMatchers("/public/**", "/user/get/**", "/actuator/**", "/user/user-details/**")
+                .permitAll()
                 .antMatchers("/user/delete/**", "/user/", "user/change-role/**")
                 .hasAuthority("ADMIN")
                 .anyRequest()
