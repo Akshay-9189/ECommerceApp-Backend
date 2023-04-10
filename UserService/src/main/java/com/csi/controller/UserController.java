@@ -1,5 +1,6 @@
 package com.csi.controller;
 
+import com.csi.dto.AddUpdateUserRequest;
 import com.csi.model.UserInfo;
 import com.csi.service.UserService;
 import com.csi.service.impl.CustomUserDetailService;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -24,18 +27,18 @@ public class UserController {
 
     // @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/")
-    public ResponseEntity<?> getAllUser() {
+    public ResponseEntity<List<UserInfo>> getAllUser() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/get/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable String userId) {
+    public ResponseEntity<UserInfo> getUser(@PathVariable String userId) {
         return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody UserInfo userInfo) {
-        return new ResponseEntity<>(userService.updateUser(userId, userInfo), HttpStatus.OK);
+    public ResponseEntity<UserInfo> updateUser(@PathVariable String userId, @RequestBody AddUpdateUserRequest addUpdateUserRequest) {
+        return new ResponseEntity<>(userService.updateUser(userId, addUpdateUserRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{userId}")

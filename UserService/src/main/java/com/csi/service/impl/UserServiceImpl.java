@@ -1,16 +1,21 @@
 package com.csi.service.impl;
 
 import com.csi.dao.UserDao;
-import com.csi.exception.UserNotFound;
+import com.csi.dto.AddUpdateUserRequest;
+import com.csi.enums.Roles;
 import com.csi.model.UserInfo;
 import com.csi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDao userDao;
@@ -26,13 +31,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfo saveUser(UserInfo userInfo) {
+    public UserInfo saveUser(AddUpdateUserRequest addUpdateUserRequest) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserFirstName(addUpdateUserRequest.getUserFirstName());
+        userInfo.setUserLastName(addUpdateUserRequest.getUserLastName());
+        userInfo.setUserContactNumber(addUpdateUserRequest.getUserContactNumber());
+        userInfo.setUserEmail(addUpdateUserRequest.getUserEmail());
+        userInfo.setUserPassword(passwordEncoder.encode(addUpdateUserRequest.getUserPassword()));
+        userInfo.setRoles(Roles.USER);
         return userDao.saveUser(userInfo);
     }
 
     @Override
-    public UserInfo updateUser(String userId, UserInfo userInfo) {
-        return userDao.updateUser(userId, userInfo);
+    public UserInfo updateUser(String userId, AddUpdateUserRequest addUpdateUserRequest) {
+        return userDao.updateUser(userId, addUpdateUserRequest);
     }
 
     @Override

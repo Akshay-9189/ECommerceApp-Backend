@@ -1,6 +1,7 @@
 package com.csi.dao.impl;
 
 import com.csi.dao.UserDao;
+import com.csi.dto.AddUpdateUserRequest;
 import com.csi.exception.UserNotFound;
 import com.csi.model.UserInfo;
 import com.csi.repo.UserRepo;
@@ -35,13 +36,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserInfo updateUser(String userId, UserInfo userInfo) {
+    public UserInfo updateUser(String userId, AddUpdateUserRequest addUpdateUserRequest) {
         UserInfo info = userRepo.findById(userId).orElseThrow(() -> new UserNotFound("User Not Exists"));
-        info.setUserFirstName(userInfo.getUserFirstName());
-        info.setUserLastName(userInfo.getUserLastName());
-        info.setUserContactNumber(userInfo.getUserContactNumber());
-        info.setUserEmail(userInfo.getUserEmail());
-        info.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+        info.setUserFirstName(addUpdateUserRequest.getUserFirstName());
+        info.setUserLastName(addUpdateUserRequest.getUserLastName());
+        info.setUserContactNumber(addUpdateUserRequest.getUserContactNumber());
+        info.setUserEmail(addUpdateUserRequest.getUserEmail());
+        info.setUserPassword(passwordEncoder.encode(addUpdateUserRequest.getUserPassword()));
         return userRepo.save(info);
     }
 

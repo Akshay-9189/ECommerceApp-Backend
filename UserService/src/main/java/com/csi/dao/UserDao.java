@@ -1,6 +1,6 @@
 package com.csi.dao;
 
-import com.csi.exception.UserNotFound;
+import com.csi.dto.AddUpdateUserRequest;
 import com.csi.model.UserInfo;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface UserDao {
 
     UserInfo saveUser(UserInfo userInfo);
 
-    UserInfo updateUser(String userId, UserInfo userInfo);
+    UserInfo updateUser(String userId, AddUpdateUserRequest addUpdateUserRequest);
 
     void deleteUser(String userId);
 

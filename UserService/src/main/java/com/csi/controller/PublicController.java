@@ -1,9 +1,8 @@
 package com.csi.controller;
 
+import com.csi.dto.AddUpdateUserRequest;
 import com.csi.dto.LogInRequest;
 import com.csi.dto.LogInResponse;
-import com.csi.enums.Roles;
-import com.csi.model.UserInfo;
 import com.csi.security.JwtUtil;
 import com.csi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,21 +22,14 @@ public class PublicController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
     @PostMapping("/signup")
-    public ResponseEntity<?> saveUser(@RequestBody UserInfo userDetailsInfo) {
-        userDetailsInfo.setUserPassword(passwordEncoder.encode(userDetailsInfo.getUserPassword()));
-        userDetailsInfo.setRoles(Roles.USER);
-        return new ResponseEntity<>(userService.saveUser(userDetailsInfo), HttpStatus.CREATED);
+    public ResponseEntity<?> saveUser(@RequestBody AddUpdateUserRequest addUpdateUserRequest) {
+        return new ResponseEntity<>(userService.saveUser(addUpdateUserRequest), HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
