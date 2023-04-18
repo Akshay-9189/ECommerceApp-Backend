@@ -7,14 +7,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({ProductNotFound.class , ProductOutOfStock.class , CategoryNotFound.class , SubCategoryNotFound.class})
-    public  ResponseEntity <?> handleNotFound(RuntimeException runtimeException){
-        Map<String, Object> map = new HashMap<>();
+    @ExceptionHandler({ProductNotFound.class, ProductOutOfStock.class, CategoryNotFound.class, SubCategoryNotFound.class})
+    public ResponseEntity<?> handleNotFound(RuntimeException runtimeException) {
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("Message :-", runtimeException.getMessage());
         map.put("Status Code :- ", HttpStatus.NOT_FOUND.value());
         map.put("Status :- ", HttpStatus.NOT_FOUND);
@@ -22,8 +23,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(FileFormatNotMatch.class)
-    public ResponseEntity<?> productOutOfStock(FileFormatNotMatch fileFormatNotMatch) {
-        Map<String, Object> map = new HashMap<>();
+    public ResponseEntity<?> fileFormatNotMatch(FileFormatNotMatch fileFormatNotMatch) {
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("Message :-", fileFormatNotMatch.getMessage());
         map.put("Status Code :- ", HttpStatus.BAD_REQUEST.value());
         map.put("Status :- ", HttpStatus.BAD_REQUEST);
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IOException.class)
     public ResponseEntity<?> fileNotFound(IOException ioException) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("Message :- ", ioException.getMessage());
         map.put("Status Code :- ", HttpStatus.NOT_FOUND.value());
         map.put("Status :- ", HttpStatus.NOT_FOUND);
@@ -41,8 +42,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> internalServerError(RuntimeException exception) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("Message :- ", exception.getMessage());
+        map.put("Cause :- ", exception.getCause());
         map.put("Status Code :- ", HttpStatus.INTERNAL_SERVER_ERROR.value());
         map.put("Status :- ", HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,7 +52,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<?> maxFileSizeExceed(MaxUploadSizeExceededException maxUploadSizeExceededException) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("Message :- ", maxUploadSizeExceededException.getMessage());
         map.put("Status Code :- ", HttpStatus.EXPECTATION_FAILED.value());
         map.put("Status :- ", HttpStatus.EXPECTATION_FAILED);
