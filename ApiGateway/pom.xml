@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -16,9 +16,7 @@
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.5</spring-cloud.version>
-        <!-- <java.version>1.8</java.version>
-         <spring-cloud.version>2020.0.6</spring-cloud.version>-->
-         <spring-cloud-services.version>2.4.1</spring-cloud-services.version>
+        <spring-cloud-services.version>2.4.1</spring-cloud-services.version>
     </properties>
     <dependencies>
         <dependency>

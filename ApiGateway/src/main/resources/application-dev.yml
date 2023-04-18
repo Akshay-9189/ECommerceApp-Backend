@@ -3,28 +3,21 @@ server:
 
 spring:
   cloud:
-    #    discovery:
-    #      enabled: true
     gateway:
-      #      discovery:
-      #        locator:
-      #          enabled: true
-      # default-filters:
-      #  - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
-      #  - AddResponseHeader=Access-Control-Allow-Origin, http://localhost:8000
-      #      globalcors:
-      #        cors-configurations:
-      #          '[/**]':
-      #            allowedOrigins:
-      #              - "http://localhost:8000"
-      #            allowedMethods:
-      #              - GET
-      #              - POST
-      #              - DELETE
-      #              - PUT
-      #              - PATCH
-      #            allowCredentials: true
-      #            allowedHeaders: "*"
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:8000"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - PATCH
+              - OPTIONS
+            allowCredentials: true
+            allowedHeaders: "*"
 
       routes:
         # Route For User Services
@@ -33,11 +26,13 @@ spring:
           predicates:
             - Path=/public/**,/user/**
           filters:
-            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: UserService
                 fallbackuri: forward:/userfallback
+            - name: Retry
+              args:
+                name: UserService
 
         # Route For Product Service
         - id: ProductService
@@ -45,11 +40,13 @@ spring:
           predicates:
             - Path=/product/**,/category/**,/sub-category/**
           filters:
-            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: ProductService
                 fallbackuri: forward:/productfallback
+            - name: Retry
+              args:
+                name: ProductService
 
         # Route For Cart Service
         - id: CartService
@@ -57,23 +54,27 @@ spring:
           predicates:
             - Path=/cart/**,/cartItems/**,/coupon/**
           filters:
-            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: CartService
                 fallbackuri: forward:/cartfallback
-
+            - name: Retry
+              args:
+                name: CartService
+        
         # Route For Order Service
         - id: OrderService
           uri: lb://OrderService
           predicates:
             - Path=/order/**
           filters:
-            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: OrderService
                 fallbackuri: forward:/orderfallback
+            - name: Retry
+              args:
+                name: OrderService
 
         # Route For Wishlist Service
         - id: WishListService
@@ -81,14 +82,18 @@ spring:
           predicates:
             - Path=/wishlist/**
           filters:
-            #            - AddRequestHeader=Access-Control-Allow-Origin, http://localhost:8000
             - name: CircuitBreaker
               args:
                 name: WishListService
                 fallbackuri: forward:/wishlistfallback
+            - name: Retry
+              args:
+                name: WishListService
 
 # Hystrix
 hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
   command:
     fallbackcmd:
       execution:
@@ -102,7 +107,6 @@ management:
     web:
       exposure:
         include: "*"
-
   health:
     circuitbreakers:
       enabled: true
@@ -113,10 +117,110 @@ management:
 # Eureka Server Configuration
 eureka:
   client:
-    fetch-register: true
+    fetch-registry: true
     register-with-eureka: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
     prefer-ip-address: true
+
+resilience4j:
+  # CircuitBreaker Module Configuration
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 4
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 5
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+    instances:
+      CartService:
+        baseConfig: default
+      UserService:
+        baseConfig: default
+      ProductService:
+        baseConfig: default
+      OrderService:
+        baseConfig: default
+      WishListService:
+        baseConfig: default
+
+  # Retry Module
+  retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 3s
+    instances:
+      CartService:
+        baseConfig: default
+      UserService:
+        baseConfig: default
+      ProductService:
+        baseConfig: default
+      OrderService:
+        baseConfig: default
+      WishListService:
+        baseConfig: default
+  
+  # Bulkhead Module
+  #  bulkhead:
+  #    configs:
+  #      default:
+  #        maxConcurrentCalls: 100
+  #    instances:
+  #      CartService:
+  #        baseConfig: default
+  #      UserService:
+  #        baseConfig: default
+  #      ProductService:
+  #        baseConfig: default
+  #      OrderService:
+  #        baseConfig: default
+  #      WishListService:
+  #        baseConfig: default
+
+  # Rate limiter module
+  #  ratelimiter:
+  #    configs:
+  #      default:
+  #        registerHealthIndicator: false
+  #        limitForPeriod: 5
+  #        limitRefreshPeriod: 1s
+  #        timeoutDuration: 0s
+  #        eventConsumerBufferSize: 50
+  #    instances:
+  #      CartService:
+  #        baseConfig: default
+  #      UserService:
+  #        baseConfig: default
+  #      ProductService:
+  #        baseConfig: default
+  #      OrderService:
+  #        baseConfig: default
+  #      WishListService:
+  #        baseConfig: default
+  
+  # Timelimiter module
+  #  timelimiter:
+  #    configs:
+  #      default:
+  #        cancelRunningFuture: false
+  #        timeoutDuration: 2s
+  #    instances:
+  #      CartService:
+  #        baseConfig: default
+  #      UserService:
+  #        baseConfig: default
+  #      ProductService:
+  #        baseConfig: default
+  #      OrderService:
+  #        baseConfig: default
+  #      WishListService:
+  #        baseConfig: default
