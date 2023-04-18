@@ -28,17 +28,11 @@
 
    **Note: If you open in same window for save & update product functionality it give `404 exception - File Not Found`**
 
-   In `ProductService` create new Directory/Folder => `static` in src/main/resources then
-   again create new Directory/Folder => `images` in src/main/resources/static
-
-   **Note: For the first time add any image in `ProductService/src/main/resources/static/images`**
-
-   Then run the application
 6. Please download Zipkin Server from [here](https://zipkin.io/pages/quickstart.html). Paste
    the `zipkin-server-2.23.19-exec` file in `ECommerceApp-Backend` folder. Open `cmd` from ECommerceApp-Backend location
    type `java -jar zipkin-server-2.23.19-exec` enter
 
-## Important URI'S
+## Important URL'S
 
 1. Service Registry `Port - 8761` :- [Eureka Server](http://localhost:8761/)
 2. API Gateway `Port - 9000` :-
@@ -53,3 +47,4 @@
    Service `Port - 9005` :- [API Documentation For Wishlist Service](http://localhost:9005/swagger-ui/index.html)
 8. Hystrix Dashboard `Port - 9009` :- [Hystrix Dashboard](http://localhost:9009/hystrix)
 9. Zipkin Server `Port - 9411` :- [Zipkin Server](http://127.0.0.1:9411/)
+10. Admin Server `Port - 8761` :- [Spring Boot Admin Server](http://localhost:8761/admin)
