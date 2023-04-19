@@ -32,7 +32,7 @@ public class Product {
 
     private String imageURL;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = SubCategory.class)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, targetEntity = SubCategory.class)
     @JoinColumn(name = "subCategoryId")
     private SubCategory subCategory;
 }

@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -22,7 +21,7 @@ public class SubCategory {
 
     private String subCategoryName;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Category.class)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, targetEntity = Category.class)
     @JoinColumn(name = "categoryId")
     private Category category;
 }
