@@ -8,7 +8,7 @@
         <version>2.7.5</version>
         <relativePath/>
     </parent>
-    <groupId>com.csi</groupId>
+    <groupId>com.fullstack</groupId>
     <artifactId>UserService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>UserService</name>
