@@ -1,9 +1,26 @@
-FROM openjdk:17.0
+# ===== Build Stage =====
+FROM eclipse-temurin:17-jdk-alpine AS build
 
-LABEL maintainer="akshay"
+# Set work directory
+WORKDIR /app
 
-ADD target/UserService.jar UserService.jar
+# Copy project files
+COPY . .
 
-ENTRYPOINT ["java" , "-jar" , "UserService.jar"]
+# Build the application
+RUN ./mvnw clean package -DskipTests
 
+# ===== Run Stage =====
+FROM eclipse-temurin:17-jdk-alpine
+
+# Set work directory
+WORKDIR /app
+
+# Copy the JAR from the build stage
+COPY --from=build /app/target/UserService.jar UserService.jar
+
+# Expose port
 EXPOSE 9001
+
+# Run the app
+ENTRYPOINT ["java", "-jar", "UserService.jar", "application.yml"]
