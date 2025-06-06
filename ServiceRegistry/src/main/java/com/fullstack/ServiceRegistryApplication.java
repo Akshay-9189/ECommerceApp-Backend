@@ -1,4 +1,4 @@
-package com.csi;
+package com.fullstack;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
