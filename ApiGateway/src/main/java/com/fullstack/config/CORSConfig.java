@@ -1,4 +1,4 @@
-package com.csi.config;
+package com.fullstack.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;

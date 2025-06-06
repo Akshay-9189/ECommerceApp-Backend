@@ -1,4 +1,4 @@
-package com.csi.config;
+package com.fullstack.config;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
