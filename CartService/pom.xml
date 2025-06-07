@@ -8,7 +8,7 @@
         <version>2.7.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.csi</groupId>
+    <groupId>com.fullstack</groupId>
     <artifactId>CartService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>CartService</name>
@@ -52,11 +52,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>

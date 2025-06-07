@@ -1,0 +1,17 @@
+package com.fullstack.dao;
+
+import com.fullstack.model.CartItems;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
+public interface CartItemsDao {
+
+    @CacheEvict(value = {"CartItemsByID", "ShoppingCardByID", "ShoppingCartByUserID"}, allEntries = true)
+    CartItems saveCartItem(CartItems cartItems);
+
+    @Cacheable(value = "CartItemsByID")
+    CartItems getCartItems(String cartItemsId);
+
+    @CacheEvict(value = {"CartItemsByID", "ShoppingCardByID", "ShoppingCartByUserID"}, allEntries = true)
+    void deleteCart(String cartItemsId);
+}
