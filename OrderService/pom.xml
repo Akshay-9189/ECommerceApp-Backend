@@ -8,7 +8,7 @@
         <version>2.7.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.csi</groupId>
+    <groupId>com.fullstack</groupId>
     <artifactId>OrderService</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>OrderService</name>
@@ -61,6 +61,11 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.0.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
