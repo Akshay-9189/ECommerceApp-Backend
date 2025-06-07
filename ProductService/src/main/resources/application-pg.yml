@@ -1,0 +1,51 @@
+# Application's Port
+server:
+  port: 9002
+
+spring:
+  # Database Configuration
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ProductService
+    username: postgres
+    password: postgres
+
+  # JPA , Hibernate Configuration
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      ddl: true
+    show-sql: true
+
+  # Spring Boot Admin Client
+  boot:
+    admin:
+      client:
+        url:
+          - http://localhost:8761/admin
+
+  # Zipkin Server Configuration
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+
+# Spring Boot Actuator Exposing All End Points
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+# Eureka Server Configuration
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-register: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
