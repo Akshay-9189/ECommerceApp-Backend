@@ -3,6 +3,7 @@ package com.fullstack.service.impl;
 import com.fullstack.dao.CartItemsDao;
 import com.fullstack.dao.ShoppingCartDao;
 import com.fullstack.exception.CartItemNotFound;
+import com.fullstack.exception.CouponNotFoundException;
 import com.fullstack.exception.ProductAlreadyExists;
 import com.fullstack.model.CartItems;
 import com.fullstack.model.Coupon;
@@ -14,6 +15,7 @@ import com.fullstack.vo.UserData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -207,6 +209,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart addCouponToCart(String shoppingCartId, String couponName) {
         Coupon coupon = couponService.getByName(couponName);
+        if (ObjectUtils.isEmpty(coupon))
+            throw new CouponNotFoundException(String.format("Coupon %s not found", couponName));
+
         ShoppingCart shoppingCart = shoppingCartDao.getCartById(shoppingCartId);
         shoppingCart.setCoupon(coupon);
 
